@@ -1,25 +1,23 @@
-import logo from './logo.svg';
-import './App.css';
+import * as React from "react";
+import Navbar from "./components/Navbar";
+import SingleTask from "./components/SingleTask";
+import TaskModal from "./components/TaskModal";
 
-function App() {
+export default function App() {
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <div className="page-content container note-has-grid">
+        <Navbar addTaskEvent={handleOpen} />
+        <div className="tab-content bg-transparent">
+          <div id="note-full-container" className="note-has-grid row">
+            <SingleTask />
+          </div>
+        </div>
+        <TaskModal modalOpen={open} modalClose={handleClose} />
+      </div>
+    </>
   );
 }
-
-export default App;
