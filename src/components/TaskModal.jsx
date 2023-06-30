@@ -1,5 +1,7 @@
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
+import TaskContext from "../context/TaskContext";
+import { createContext, useContext, useState } from "react";
 
 const style = {
     position: "absolute",
@@ -12,6 +14,23 @@ const style = {
 };
 
 export default function TaskModal({ modalOpen, modalClose }) {
+    const tasks = useContext(TaskContext);
+    const [title, setTitle] = useState('');
+    const [description, setDescription] = useState('');
+
+    const addTask = (e)=>{ 
+        e.preventDefault();
+        tasks.push({title, description, date: new Date().toDateString(), status: 'progress'});
+        createContext(tasks)
+        console.log(tasks);
+    }
+    const onTitleChange = (e)=>{
+            setTitle(e.target.value)
+            console.log(title);
+    }
+    const onDescriptionChange = (e)=>{
+            setDescription(e.target.value)
+    }
     return (
         <>
             <Modal open={modalOpen} onClose={modalClose}>
@@ -46,8 +65,10 @@ export default function TaskModal({ modalOpen, modalClose }) {
                                                         <input
                                                             type="text"
                                                             id="note-has-title"
+                                                            value={title}
                                                             className="form-control"
                                                             placeholder="Title"
+                                                            onChange={onTitleChange}
                                                         />
                                                     </div>
                                                 </div>
@@ -60,6 +81,8 @@ export default function TaskModal({ modalOpen, modalClose }) {
                                                             className="form-control"
                                                             placeholder="Description"
                                                             rows="3"
+                                                            value={description}
+                                                            onChange={onDescriptionChange}
                                                         ></textarea>
                                                     </div>
                                                 </div>
@@ -73,10 +96,10 @@ export default function TaskModal({ modalOpen, modalClose }) {
                                     Discard
                                 </button>
                                 <button
+                                    onClick={addTask}
                                     id="btn-n-add"
                                     className="btn btn-info"
-                                    disabled="disabled"
-                                    style={{ margin: "5px" }}
+                                    style={{ margin: "5px", color: '#fff' }}
                                 >
                                     Add
                                 </button>
